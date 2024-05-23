@@ -20,7 +20,7 @@ jobs:
   - script: |
       if "%SystemOnline%" == "true" (
           echo "System is online. Running concurrent test cases..."
-          # Run your concurrent test cases here
+          REM Run your concurrent test cases here
           echo "Running concurrent test cases..."
       ) else (
           echo "System is offline or rebooting. Skipping test execution."
