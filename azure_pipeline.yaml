@@ -18,13 +18,13 @@ jobs:
     displayName: Check System Status
 
   - script: |
-      if [ "$(SystemOnline)" == "true" ]; then
+      if "%SystemOnline%" == "true" (
           echo "System is online. Running concurrent test cases..."
           # Run your concurrent test cases here
           echo "Running concurrent test cases..."
-      else
+      ) else (
           echo "System is offline or rebooting. Skipping test execution."
-      fi
+      )
     displayName: Run Concurrent Tests
   condition: |
     and(
