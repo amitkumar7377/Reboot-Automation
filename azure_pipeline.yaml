@@ -2,7 +2,7 @@ trigger:
 - none
 
 pool:
-  name: Reboot-Automation-Agent
+  name: Azure Pipelines
 
 jobs:
 - job: RunTests
