@@ -1,9 +1,10 @@
-# azure-pipelines.yml
 trigger:
 - main
 
 pool:
-  vmImage: 'Reboot-Automation'
+  name: 'Reboot-Automation'  # Replace with the name of your self-hosted agent pool
+  demands:
+  - python
 
 variables:
   ip_address: '192.168.1.14'
@@ -13,11 +14,6 @@ jobs:
 - job: CheckSystemStatus
   displayName: 'Check System Online/Offline Status'
   steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      addToPath: true
-
   - script: |
       python $(system_check_script)
     displayName: 'Run System Status Check Script'
@@ -38,4 +34,3 @@ jobs:
       # Add commands to run your test cases here.
     displayName: 'Wait for System and Run Tests'
     condition: and(succeeded(), eq(variables['SystemStatus'], 'offline'))
-
