@@ -3,8 +3,7 @@ trigger:
 
 pool:
   name: 'Reboot-Automation'  # Replace with the name of your self-hosted agent pool
-  demands:
-  - python
+ 
 
 variables:
   ip_address: '192.168.1.14'
