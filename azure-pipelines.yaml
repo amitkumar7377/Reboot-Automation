@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: 'dafault'  # Replace with the name of your self-hosted agent pool
+  name: 'default'  # Replace with the name of your self-hosted agent pool
   demands:
   - python
 
