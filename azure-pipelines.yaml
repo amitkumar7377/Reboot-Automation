@@ -22,7 +22,7 @@ jobs:
 
   - script: |
       echo "System is online and not rebooting. Proceeding with initial tests..."
-      robot $(initial_tests)
+      call robot.bat $(initial_tests)
     displayName: 'Run Initial Tests'
     condition: and(succeeded(), eq(variables['SystemStatus'], 'online'))
 
@@ -33,7 +33,7 @@ jobs:
         sleep 30
       done
       echo "System is back online. Proceeding with initial tests..."
-      robot $(initial_tests)
+      call robot.bat $(initial_tests)
     displayName: 'Wait for System and Run Initial Tests'
     condition: and(succeeded(), eq(variables['SystemStatus'], 'offline'))
 
@@ -49,6 +49,6 @@ jobs:
 
   - script: |
       echo "Running remaining test cases..."
-      robot $(remaining_tests)
+      call robot.bat $(remaining_tests)
     displayName: 'Run Remaining Tests'
     condition: always()
