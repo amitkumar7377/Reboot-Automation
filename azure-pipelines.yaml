@@ -7,6 +7,9 @@ pool:
 variables:
   ip_address: '192.168.1.14'
   system_check_script: 'check_system_status.py'
+  test_suite: 'tests/'  # Replace with the path to your Robot Framework test suite
+  initial_tests: 'tests/initial/'  # Path to initial tests
+  remaining_tests: 'tests/remaining/'  # Path to remaining tests
 
 jobs:
 - job: CheckSystemStatus
@@ -19,7 +22,7 @@ jobs:
 
   - script: |
       echo "System is online and not rebooting. Proceeding with initial tests..."
-      # Add commands to run your initial test cases here.
+      robot $(initial_tests)
     displayName: 'Run Initial Tests'
     condition: and(succeeded(), eq(variables['SystemStatus'], 'online'))
 
@@ -30,7 +33,7 @@ jobs:
         sleep 30
       done
       echo "System is back online. Proceeding with initial tests..."
-      # Add commands to run your initial test cases here.
+      robot $(initial_tests)
     displayName: 'Wait for System and Run Initial Tests'
     condition: and(succeeded(), eq(variables['SystemStatus'], 'offline'))
 
@@ -41,12 +44,11 @@ jobs:
         sleep 30
       done
       echo "System is back online. Resuming tests..."
-      # Add commands to run the remaining test cases here.
     displayName: 'Check System During Tests'
     condition: always()
 
   - script: |
       echo "Running remaining test cases..."
-      # Add commands to run the remaining test cases here.
+      robot $(remaining_tests)
     displayName: 'Run Remaining Tests'
     condition: always()
