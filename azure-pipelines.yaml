@@ -5,7 +5,7 @@ pool:
   name: 'Reboot-Automation'  # Replace with the name of your self-hosted agent pool
 
 variables:
-  ip_address: '192.168.1.8'
+  ip_address: '192.168.2.127'
   system_check_script: 'check_system_status.py'
   test_suite: 'tests/'  # Replace with the path to your Robot Framework test suite
   initial_tests: 'tests/initial/'  # Path to initial tests
