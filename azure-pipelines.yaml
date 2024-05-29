@@ -1,50 +1,26 @@
-trigger:
-- main
-
+resources:
+  repositories:
+  - repository: xxx
+    type: githubenterprise
+    endpoint: GithubEnterprise
+    name: commercial-pc-software/xxx    
+    ref: kp/yyy
+ 
 variables:
-  system_check_script: 'check_system_status.py'
-  test_suite: 'tests/'  # Replace with the path to your Robot Framework test suite
-  initial_tests: 'tests/initial/'  # Path to initial tests
-  remaining_tests: 'tests/remaining/'  # Path to remaining tests
-
+- group: ZTA
+ 
+trigger: none
+ 
+ 
 jobs:
-- job: CheckSystemStatus
-  displayName: 'Check System Online/Offline Status'
-  steps:
-  - script: |
-      python $(system_check_script)
-    displayName: 'Run System Status Check Script'
-    name: CheckInitialStatus
-
-  - script: |
-      echo "System is online and not rebooting. Proceeding with initial tests..."
-      call robot.bat $(initial_tests)
-    displayName: 'Run Initial Tests'
-    condition: and(succeeded(), eq(variables['SystemStatus'], 'online'))
-
-  - script: |
-      echo "System is either offline or rebooting. Waiting for it to come back online..."
-      while ! python -c 'import subprocess, platform, time; from check_system_status import is_system_online, is_system_rebooting; ip_address="$(ip_address)"; print(is_system_online(ip_address) and not is_system_rebooting())'; do
-        echo "System is still offline or rebooting. Checking again in 30 seconds..."
-        sleep 30
-      done
-      echo "System is back online. Proceeding with initial tests..."
-      call robot.bat $(initial_tests)
-    displayName: 'Wait for System and Run Initial Tests'
-    condition: and(succeeded(), eq(variables['SystemStatus'], 'offline'))
-
-  - script: |
-      echo "Running system online/offline check during test execution..."
-      while ! python -c 'import subprocess, platform, time; from check_system_status import is_system_online, is_system_rebooting; ip_address="$(ip_address)"; print(is_system_online(ip_address) and not is_system_rebooting())'; do
-        echo "System went offline or is rebooting. Waiting for it to come back online..."
-        sleep 30
-      done
-      echo "System is back online. Resuming tests..."
-    displayName: 'Check System During Tests'
-    condition: always()
-
-  - script: |
-      echo "Running remaining test cases..."
-      call robot.bat $(remaining_tests)
-    displayName: 'Run Remaining Tests'
-    condition: always()
+- template: pipeline-dispatcher.yml
+  parameters:
+    serialNumber: "123"
+    agentName: 'ZTA_Agent_74'
+    pool: "$(poolName)"
+    rootId: ''
+    componentLocation: '' #'\\\\houcomfile02.auth.hpicorp.net\\PreRelease\\Manageability\\HPIA\\ImagePal-5.1.0.1'
+    testExecutionType: 'Azure'
+    testCases:
+      #Azure
+    - "SFT\\HIA\\1_4_ValidateHPSignatureForHPImageAssistantDll"
